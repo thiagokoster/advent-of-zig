@@ -1,6 +1,6 @@
 const std = @import("std");
 
-pub fn readLines(allocator: std.mem.Allocator, path: []const u8) ![][]const u8 {
+pub fn readLines(allocator: std.mem.Allocator, path: []const u8) ![][]u8 {
     var file = try std.fs.cwd().openFile(path, .{});
     defer file.close();
     const stat = try file.stat();
@@ -11,13 +11,15 @@ pub fn readLines(allocator: std.mem.Allocator, path: []const u8) ![][]const u8 {
 
     _ = try file.readAll(buffer);
 
-    var lines = std.ArrayList([]const u8){};
+    var lines = std.ArrayList([]u8){};
     errdefer lines.deinit(allocator);
 
     var it = std.mem.tokenizeScalar(u8, buffer, '\n');
     while (it.next()) |line| {
-        try lines.append(allocator, line);
+        const lineMut = try allocator.dupe(u8, line);
+        try lines.append(allocator, lineMut);
     }
 
     return try lines.toOwnedSlice(allocator);
 }
+
