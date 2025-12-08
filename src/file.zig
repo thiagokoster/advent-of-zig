@@ -14,7 +14,7 @@ pub fn readLines(allocator: std.mem.Allocator, path: []const u8) ![][]u8 {
     var lines = std.ArrayList([]u8){};
     errdefer lines.deinit(allocator);
 
-    var it = std.mem.tokenizeScalar(u8, buffer, '\n');
+    var it = std.mem.splitScalar(u8, buffer, '\n');
     while (it.next()) |line| {
         const lineMut = try allocator.dupe(u8, line);
         try lines.append(allocator, lineMut);
