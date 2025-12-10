@@ -1,7 +1,7 @@
 const std = @import("std");
 const testing = std.testing;
 
-const year2025 = @import("2025/07/07.zig");
+const year2025 = @import("2025/08/08.zig");
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
